@@ -1,0 +1,9 @@
+[package]
+name = "FMS"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+os_info = "3.14.0"
+sysinfo = "0.38.4"
+tokio = { version = "1.52.3", features = ["full"] }

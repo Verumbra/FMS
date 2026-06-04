@@ -10,7 +10,7 @@ enum NodeType {
     FILE(String)
 }
 
-enum StatusFM {
+ pub enum StatusFM {
     OK,
     ERROR(String),
     AEXIST,

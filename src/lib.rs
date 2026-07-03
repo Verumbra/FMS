@@ -17,7 +17,7 @@ enum NodeType {
     NOTFOUND,
 }
 struct Metadata {
-    Type: NodeType,
+       Type: NodeType,
 }
 
 struct FmstNode<T> {
@@ -209,6 +209,14 @@ impl Fms {
         }
     }
     //todo create patch fn
+    ///used to check the existence of a file and return the statusFM; the path aug needs the full path including the file name in it.
+    async fn file_check(&self,path: impl AsRef<Path>) -> StatusFM {
+        match fs::try_exists(path).await {
+            Ok(true) => StatusFM::OK,
+            Ok(false) => StatusFM::NOTFOUND,
+            Err(e) => StatusFM::ERROR(e.to_string())
+        }
+    }
 
 }
 impl StartUp for Fms {

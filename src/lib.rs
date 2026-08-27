@@ -161,7 +161,7 @@ impl Fms {
         return StatusFM::OK;
     }
     ///
-    pub async fn create_item_dir_at(name: &str, path: impl AsRef<Path>) -> StatusFM {
+    pub async fn create_item_dir_at(&self, name: &str, path: impl AsRef<Path>) -> StatusFM {
         let p = create_pathing_check!(name, dir, path);
 
         match fs::create_dir(&p).await {
@@ -171,13 +171,13 @@ impl Fms {
         return StatusFM::OK;
     }
     ///
-    pub async fn create_item_file(name: &str, data: &str) -> StatusFM {
+    pub async fn create_item_file(&self, name: &str, data: &str) -> StatusFM {
         let p = create_pathing_check!(name, file);
         let result = fs::File::create(&p).await;
         write_file!(result, data)
     }
     ///
-    pub async fn create_item_file_at(name: &str, path: impl AsRef<Path>, data: &str) -> StatusFM {
+    pub async fn create_item_file_at(&self, name: &str, path: impl AsRef<Path>, data: &str) -> StatusFM {
         let p = create_pathing_check!(name, file, path);
 
         let result = fs::File::create(&p).await;
@@ -185,7 +185,7 @@ impl Fms {
     }
     ///this method is no safe as it at the moment just overrides the file
     /// todo update the method to use the temporary file pattern ( read, Modify, Write, Rename)
-    pub async fn update_item_file(name: &str, data: &str) -> StatusFM {
+    pub async fn update_item_file(&self, name: &str, data: &str) -> StatusFM {
         //path checking
         let p = Path::new(std::env::current_dir().unwrap().as_path()).join(name);
         if (!p.is_file()) {
@@ -198,7 +198,7 @@ impl Fms {
         }
     }
 
-    pub async fn update_item_file_at(name: &str, path: impl AsRef<Path>, data: &str) -> StatusFM {
+    pub async fn update_item_file_at(&self, name: &str, path: impl AsRef<Path>, data: &str) -> StatusFM {
         let mut p = path.as_ref().to_path_buf();
         p.push(name);
         if (!p.is_file()) {return StatusFM::NOTFOUND}

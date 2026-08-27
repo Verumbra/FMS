@@ -149,7 +149,7 @@ impl Fms {
     ///one of the two main function to use to create new user dir and item dir to items in.
     /// this version uses the working dir as the base pathing for dir creation, if you want to create a new dir at an exact loction then use create_item_dir
     /// the default pathing should be the working dir/common/users
-    async fn create_item_dir(name: &str) -> StatusFM {
+    pub async fn create_item_dir(name: &str) -> StatusFM {
 
         let p = create_pathing_check!(name, dir);
 
@@ -161,7 +161,7 @@ impl Fms {
         return StatusFM::OK;
     }
     ///
-    async fn create_item_dir_at(name: &str, path: impl AsRef<Path>) -> StatusFM {
+    pub async fn create_item_dir_at(name: &str, path: impl AsRef<Path>) -> StatusFM {
         let p = create_pathing_check!(name, dir, path);
 
         match fs::create_dir(&p).await {
@@ -171,13 +171,13 @@ impl Fms {
         return StatusFM::OK;
     }
     ///
-    async fn create_item_file(name: &str, data: &str) -> StatusFM {
+    pub async fn create_item_file(name: &str, data: &str) -> StatusFM {
         let p = create_pathing_check!(name, file);
         let result = fs::File::create(&p).await;
         write_file!(result, data)
     }
     ///
-    async fn create_item_file_at(name: &str, path: impl AsRef<Path>, data: &str) -> StatusFM {
+    pub async fn create_item_file_at(name: &str, path: impl AsRef<Path>, data: &str) -> StatusFM {
         let p = create_pathing_check!(name, file, path);
 
         let result = fs::File::create(&p).await;
@@ -185,7 +185,7 @@ impl Fms {
     }
     ///this method is no safe as it at the moment just overrides the file
     /// todo update the method to use the temporary file pattern ( read, Modify, Write, Rename)
-    async fn update_item_file(name: &str, data: &str) -> StatusFM {
+    pub async fn update_item_file(name: &str, data: &str) -> StatusFM {
         //path checking
         let p = Path::new(std::env::current_dir().unwrap().as_path()).join(name);
         if (!p.is_file()) {
@@ -198,7 +198,7 @@ impl Fms {
         }
     }
 
-    async fn update_item_file_at(name: &str, path: impl AsRef<Path>, data: &str) -> StatusFM {
+    pub async fn update_item_file_at(name: &str, path: impl AsRef<Path>, data: &str) -> StatusFM {
         let mut p = path.as_ref().to_path_buf();
         p.push(name);
         if (!p.is_file()) {return StatusFM::NOTFOUND}
@@ -210,7 +210,7 @@ impl Fms {
     }
     //todo create patch fn
     ///used to check the existence of a file and return the statusFM; the path aug needs the full path including the file name in it.
-    async fn file_check(&self,path: impl AsRef<Path>) -> StatusFM {
+    pub async fn file_check(&self,path: impl AsRef<Path>) -> StatusFM {
         match fs::try_exists(path).await {
             Ok(true) => StatusFM::OK,
             Ok(false) => StatusFM::NOTFOUND,
